@@ -1,6 +1,7 @@
 # Indels allow antiviral proteins to evolve functional novelty inaccessible by missense mutations
 
-https://www.biorxiv.org/content/10.1101/2024.05.07.592993v1
+  This repo contains raw data and code for analysis as supporting data for:
+Tenthorey JL, del Banco S, Ramzan I, Klingenberg H, Liu C, Emerman M, Malik HS. (2024). Indels enable a human antiviral protein to acquire functional novelty inaccessible by missense mutation. bioRxiv [preprint] DOI: https://doi.org/10.1101/2024.05.07.592993. 
 
 We sought to understand the evolutionary paths by which TRIM5α might evolve de novo antiviral function against an SIV endemic to sabaeus monkeys (SIVsab), which is a particularly difficult evolutionary challenge for TRIM5α. Human TRIM5α has no antiviral activity against this lentivirus, while the rhesus macaque TRIM5α potently inhibits SIVsab. To understand the evolutionary potentials and constraints for this difficult antiviral function, we generated libraries of variants within the lentiviral-specificity-determining v1 loop of full-length TRIM5α. These include:
 - Deep mutational scanning (DMS) libraries of all possible single-missense variants within the v1 loop (residues 330-340 of human TRIM5α, “HsDMS” or “HD”; 332-344 of rhesus TRIM5α, “RhDMS” or “RD”);
