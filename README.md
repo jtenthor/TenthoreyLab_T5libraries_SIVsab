@@ -18,17 +18,17 @@ Illumina libraries were barcoded (for each of the 5 samples from each experiment
 ## Description of the data and file structure
 
 All data are organized by experimental library:
-- “HsDMS” and “RhDMS” folders contain the HsDMS and RhDMS experiments, respectively.
-- “HsIndel” folder contains the HsIndel library experiment.
-- “H2R2H” folder contains both H2R and R2H library experiments.
+- The “HsDMS” and “RhDMS” folders contain the HsDMS and RhDMS experiments, respectively.
+- The “HsIndel” folder contains the HsIndel library experiment.
+- The “H2R2H” folder contains both H2R and R2H library experiments.
 
 Within each of these folders, the source data, processing scripts, and fully processed data for the relevant experiment can be found. They are organized as follows:
-- The “Data” subfolder contains the fasta files of pre-processed data as (i.e. adapter trimmed, paired-end read merged, quality filtered, and collapsed into the number of reads for each unique sequence) for each sample, entitled “Sample_collapsed.fasta”. As noted above, each folder contains 5 samples (plasmid, 2 input replicates, 2 sorted replicates).
-  - Note that the Github repository does not include raw Illumina reads, as these files were too large to upload. Scripts used to pre-process data (merging paired end reads, trimming adapters, quality filtering, and collapsing to unique sequences) each experiment can be found in the “RawDataPreProcessing/Scripts” main level folder. 
+- The “Data” subfolder contains the fasta files of pre-processed data as (i.e. adapter trimmed, paired-end read merged, quality filtered, and collapsed into the number of reads for each unique sequence) for each sample, entitled “Sample_collapsed.fasta”. As noted above, each folder contains 5 samples (plasmid, 2 input replicates [A and B], 2 sorted replicates [A and B]; labeled as such nd pre-pended with the variant library code [HD, RD, H2R, R2H, and HI]).
+  - Note that the Github repository does not include raw Illumina reads, as these files were too large to upload. Scripts used to pre-process data (merging paired end reads, trimming adapters, quality filtering, and collapsing to unique sequences) for each experiment can be found in the “RawDataPreProcessing/Scripts” main level folder. 
   - For libraries generated via DNA synthesis (HsIndel, H2R, and R2H), the Data subfolder also contains the ordered DNA variants as a .csv file. Because H2R and R2H libraries had a high observed frequency of several synthesis errors, these error variants were included in the expected variant files to use as negative controls in subsequent analysis (“CombiSeqListActual_H.csv” and “CombiSeqListActual_R.csv”, respectively).
 - The “Scripts” subfolder contains R scripts (.R files) used to further analyze pre-processed data, as described in the Code/Software section below.
   - All experiments contain an R script matching the experiment name for determining enrichment of each variant in the sorted pool.
-  - The combinatorial library experiments (H2R and R2H) also scripts for determining Hamming distance (number of mutations) from the wild-type variant, and a script for Chi-squared test.
+  - The combinatorial library experiments (H2R and R2H) also contain scripts for determining Hamming distance (number of mutations) from the wild-type variant, and a script for Chi-squared test.
 - The “Analysis” subfolder contains the output files from R scripts. All output files are .csv format.
 
 ## Code/Software
@@ -61,5 +61,7 @@ c.	codon ending in a C or G at the 3rd position (as libraries were created using
 6.	Sequences with < 10 cpm in either input library were removed for having too much noise in subsequent analysis.
 7.	Enrichment was calculated for each sequence by dividing sorted cpm by input cpm for each replicate.
 8.	All synonymously-coding variants were averaged to yield an enrichment score for each protein sequence for each replicate. The standard deviation of enrichment was calculated across synonymous variants and replicates. The only exception was for wild-type-synonymous variants, which were plotted separately to give a visual representation of the standard deviation in each replicate. Fully wild-type nucleotide sequence was removed from further analysis because (1) it was sometimes a strong outlier relative to all other wild-type variants, and (2) this effect could have been due to plasmid contamination of samples with wild-type TRIM5α. 
+
 All other libraries were processed in a similar manner, except that instead of filtering as in step 3 above, fasta files were mapped to a table of expected sequences based on library construction, and only sequences matching these exact nucleotide sequences were retained. The expected sequence files can be found as csv files in the “Data” subfolder for each relevant experimental folder. Typically, >90% of reads matched these expected sequences. However, for the combinatorial library converting human into rhesus TRIM5α, we noticed a large fraction (~25%) of reads being lost at this step. Subsequent analysis identified two frameshift mutations, which were then included (as combinatorial variants) in the expected sequence list “CombiSeqListActual”. After this correction, >90% of reads matched expected sequences. Fully wild-type sequence was retained for this library, as we failed to include wild-type sequences in our library design; however, it was removed from analysis of the indel library, which was designed with 7 wild-type-synonymous variants.
+
 Gain-of-function cut-offs were set based on either premature stop codons (for DMS or indel scanning libraries; > [mean + 2 SD] in each replicate) or frameshift variants (for combinatorial human-to-rhesus library; > max score in each replicate). This choice was both more conservative for detecting any antiviral function, and it also frequently included more controls to give a better estimate of assay noise. Loss-of-function cut-offs were based on wild- type rhesus TRIM5α variants (> [mean + 2 SD] in each replicate). 
